@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "750807066163",
+    "project_id": "flutter-messenger-d91fc",
+    "storage_bucket": "flutter-messenger-d91fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750807066163:android:77a960cb801a47d9c62546",
+        "android_client_info": {
+          "package_name": "com.example.chat_us_whatapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsg0xt2n1quYkf8xJ1zSy20mNmQqWb3CY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750807066163:android:e5161fb89ea66966c62546",
+        "android_client_info": {
+          "package_name": "com.example.messager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsg0xt2n1quYkf8xJ1zSy20mNmQqWb3CY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
