@@ -8,7 +8,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:messager/Components/Helper_Widget/my_date_until.dart';
-import 'package:messager/Components/Widgets/message_card.dart';
+import 'package:messager/Components/Widgets/Message_Card/message_card.dart';
 import 'package:messager/Controller/Routes/routes_method.dart';
 import 'package:messager/Models/chat_user.dart';
 import 'package:messager/Models/messages.dart';

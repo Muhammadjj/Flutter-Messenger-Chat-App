@@ -1,10 +1,10 @@
 import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:messager/Components/Helper_Widget/my_date_until.dart';
 import 'package:messager/Controller/Apis/apis.dart';
 import 'package:messager/Models/messages.dart';
-import '../../Export/export_file.dart';
+import '../../../Export/export_file.dart';
+import 'option_item.dart';
 
 class MessageCard extends StatefulWidget {
   const MessageCard({super.key, required this.messages});
@@ -18,12 +18,16 @@ class _MessageCardState extends State<MessageCard> {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.sizeOf(context);
-    return APIS.user.uid == widget.messages.fromId
-        ? greenMessage()
-        : blueMessage();
+    bool isMe = APIS.user.uid == widget.messages.fromId;
+    return InkWell(
+      onLongPress: () {
+        _showBottomSheet(isMe: isMe, size: size);
+      },
+      child: isMe ? greenMessage() : blueMessage(),
+    );
   }
 
-  // sender and other message
+  //!  sender and other message
   Widget blueMessage() {
     if (widget.messages.read.isEmpty) {
       APIS.updateMessageReadStatus(widget.messages);
@@ -76,7 +80,7 @@ class _MessageCardState extends State<MessageCard> {
     );
   }
 
-  // our or user message .
+  //!  our or user message .
   Widget greenMessage() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -147,5 +151,95 @@ class _MessageCardState extends State<MessageCard> {
         ),
       ],
     );
+  }
+
+  // bottom sheet for modifying message details
+  void _showBottomSheet({required bool isMe, required Size size}) {
+    showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        builder: (_) {
+          return ListView(
+            shrinkWrap: true,
+            children: [
+              // ! black divider
+              Container(
+                height: 4,
+                margin: EdgeInsets.symmetric(
+                    vertical: size.height * .015, horizontal: size.width * .4),
+                decoration: BoxDecoration(
+                    color: Colors.grey, borderRadius: BorderRadius.circular(8)),
+              ),
+
+              widget.messages.type == Type.text
+                  ?
+                  // !  copy option
+                  OptionItem(
+                      size: size,
+                      icon: const Icon(Icons.copy_all_rounded,
+                          color: Colors.blue, size: 26),
+                      name: 'Copy Text',
+                      onTap: () async {})
+                  :
+                  // ! save option
+                  OptionItem(
+                      size: size,
+                      icon: const Icon(Icons.download_rounded,
+                          color: Colors.blue, size: 26),
+                      name: 'Save Image',
+                      onTap: () async {}),
+
+              //!separator or divider
+              if (isMe)
+                Divider(
+                  color: Colors.black54,
+                  endIndent: size.width * .04,
+                  indent: size.width * .04,
+                ),
+
+              //!edit option
+              if (widget.messages.type == Type.text && isMe)
+                OptionItem(
+                    size: size,
+                    icon: const Icon(Icons.edit, color: Colors.blue, size: 26),
+                    name: 'Edit Message',
+                    onTap: () {}),
+
+              //!delete option
+              if (isMe)
+                OptionItem(
+                    size: size,
+                    icon: const Icon(Icons.delete_forever,
+                        color: Colors.red, size: 26),
+                    name: 'Delete Message',
+                    onTap: () async {}),
+
+              //!separator or divider
+              Divider(
+                color: Colors.black54,
+                endIndent: size.width * .04,
+                indent: size.width * .04,
+              ),
+
+              //!sent time
+              OptionItem(
+                  size: size,
+                  icon: const Icon(Icons.remove_red_eye, color: Colors.blue),
+                  name: 'Sent At: ',
+                  onTap: () {}),
+
+              //!read time
+              OptionItem(
+                  size: size,
+                  icon: const Icon(Icons.remove_red_eye, color: Colors.green),
+                  name: widget.messages.read.isEmpty
+                      ? 'Read At: Not seen yet'
+                      : 'Read At: ',
+                  onTap: () {}),
+            ],
+          );
+        });
   }
 }
