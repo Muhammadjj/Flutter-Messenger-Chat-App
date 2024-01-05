@@ -1,9 +1,11 @@
 import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/services.dart';
 import 'package:messager/Components/Helper_Widget/my_date_until.dart';
 import 'package:messager/Controller/Apis/apis.dart';
 import 'package:messager/Models/messages.dart';
 import '../../../Export/export_file.dart';
+import '../../Helper_Widget/dialogs.dart';
 import 'option_item.dart';
 
 class MessageCard extends StatefulWidget {
@@ -181,7 +183,17 @@ class _MessageCardState extends State<MessageCard> {
                       icon: const Icon(Icons.copy_all_rounded,
                           color: Colors.blue, size: 26),
                       name: 'Copy Text',
-                      onTap: () async {})
+                      onTap: () async {
+                        ///* (Service library) Copy text class (Clipboard) and more
+                        ///* more option
+                        await Clipboard.setData(
+                                ClipboardData(text: widget.messages.msg))
+                            .then((value) {
+                          Navigator.pop(context); // hide this bottom bar .
+                          // Show snackBar.
+                          Dialogs.showSnackbar(context, "Copy Text");
+                        });
+                      })
                   :
                   // ! save option
                   OptionItem(
@@ -214,7 +226,12 @@ class _MessageCardState extends State<MessageCard> {
                     icon: const Icon(Icons.delete_forever,
                         color: Colors.red, size: 26),
                     name: 'Delete Message',
-                    onTap: () async {}),
+                    onTap: () async {
+                      // Delete a Message Id .
+                      await APIS.deleteMessage(widget.messages).then((value) {
+                        Navigator.pop(context); // hide this bottom bar .})
+                      });
+                    }),
 
               //!separator or divider
               Divider(
@@ -227,7 +244,8 @@ class _MessageCardState extends State<MessageCard> {
               OptionItem(
                   size: size,
                   icon: const Icon(Icons.remove_red_eye, color: Colors.blue),
-                  name: 'Sent At: ',
+                  name:
+                      'Sent At: ${MyDateUntil.getMessageTime(context: context, time: widget.messages.send)}',
                   onTap: () {}),
 
               //!read time
@@ -236,7 +254,7 @@ class _MessageCardState extends State<MessageCard> {
                   icon: const Icon(Icons.remove_red_eye, color: Colors.green),
                   name: widget.messages.read.isEmpty
                       ? 'Read At: Not seen yet'
-                      : 'Read At: ',
+                      : 'Read At: ${MyDateUntil.getMessageTime(context: context, time: widget.messages.read)}',
                   onTap: () {}),
             ],
           );

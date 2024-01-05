@@ -34,29 +34,29 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
 
-  # Use with the CupertinoIcons class for iOS style icons.
+  # ! Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  # Connect to flutter and anyOther platform using firebase .
+  # !Connect to flutter and anyOther platform using firebase .
   firebase_core: ^2.24.2
-  # for handling firebase authentication .
+  # !for handling firebase authentication .
   firebase_auth: ^4.15.3
-  # for handling Using Firebase Open this Google Dialog Sign in .
+  # !for handling Using Firebase Open this Google Dialog Sign in .
   google_sign_in: ^6.2.1
-  # for accessing cloud Firestore database .
+  # !for accessing cloud Firestore database .
   cloud_firestore: ^4.13.6
-  # for showing network images and store images cache .
+  # !for showing network images and store images cache .
   cached_network_image: ^3.3.0
-  # for picking Images
+  # !for picking Images
   image_picker: ^1.0.5
-  # for accessing firebase storage (for uploading files)
+  # !for accessing firebase storage (for uploading files)
   firebase_storage: ^11.5.6
-  # for showing emoji .
+  # !for showing emoji .
   emoji_picker_flutter: ^1.5.1
-  # for accessing firebase messaging (Push Notification)
+  # !for accessing firebase messaging (Push Notification)
   firebase_messaging: ^14.7.9
-  # For calling Rest Apis .
+  # !For calling Rest Apis .
   http: ^1.1.2
-  # flutter_notification_channel using this all device sound and more things allow these notification .
+  # !flutter_notification_channel using this all device sound and more things allow these notification .
   flutter_notification_channel: ^2.0.0
 
 dev_dependencies:

@@ -178,7 +178,7 @@ class APIS {
   /// Structure of Two user conversation for Firebase 👇👇👇
   //  Todo :=> chats (collection) --> conversation_id (doc) --> messages (collection) --> message (doc)
 
-  // useful for getting  conversation id
+  // ! useful for getting  conversation id
   static String getConversationId(String id) => user.uid.hashCode <= id.hashCode
       ? "${user.uid}_$id"
       : "${id}_${user.uid}";
@@ -249,5 +249,16 @@ class APIS {
     final imageUrl = await ref.getDownloadURL();
     // updating image in firestore database .
     await sendMessage(chatUser, imageUrl, Type.image);
+  }
+
+  //* Delete Message .
+  static Future<void> deleteMessage(Messages messages) async {
+    await firestore
+        .collection("chats/${getConversationId(messages.toId)}/messages/")
+        .doc(messages.send)
+        .delete();
+    if (messages.type == Type.image) {
+      await storage.refFromURL(messages.msg).delete();
+    }
   }
 }
