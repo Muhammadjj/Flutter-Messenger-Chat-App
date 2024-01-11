@@ -85,6 +85,27 @@ class APIS {
   }
 
   // ! for checking user exists OR not exists .
+  static Future<bool> addChatUser(String email) async {
+    final data = await firestore
+        .collection("users")
+        .where("email", isEqualTo: email)
+        .get();
+
+    if (data.docs.isNotEmpty && data.docs.first.id != user.uid) {
+      log("User Exists : ${data.docs.first.id}");
+      firestore
+          .collection("users")
+          .doc(user.uid)
+          .collection("add_User")
+          .doc(data.docs.first.id)
+          .set({});
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // ! for checking user exists OR not exists .
   static Future<void> getSelfInfo() async {
     await firestore.collection("users").doc(user.uid).get().then((value) async {
       if (value.exists) {
@@ -260,5 +281,13 @@ class APIS {
     if (messages.type == Type.image) {
       await storage.refFromURL(messages.msg).delete();
     }
+  }
+
+  // update tis messages .
+  static Future<void> updateMessage(Messages message, String updateMsg) async {
+    firestore
+        .collection("chats/${getConversationId(message.toId)}/messages/")
+        .doc(message.send)
+        .update({"msg": updateMsg});
   }
 }

@@ -2,7 +2,6 @@
 
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -11,7 +10,6 @@ import 'package:messager/Controller/Apis/apis.dart';
 import 'package:messager/Controller/Routes/routes_method.dart';
 import 'package:messager/Export/export_file.dart';
 import 'package:messager/Models/chat_user.dart';
-
 import '../../Components/Helper_Widget/dialogs.dart';
 
 class ProfileScreen extends StatefulWidget {

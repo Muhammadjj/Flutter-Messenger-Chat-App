@@ -1,9 +1,13 @@
 import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/services.dart';
+import 'package:gallery_saver/gallery_saver.dart';
+
 import 'package:messager/Components/Helper_Widget/my_date_until.dart';
 import 'package:messager/Controller/Apis/apis.dart';
 import 'package:messager/Models/messages.dart';
+
 import '../../../Export/export_file.dart';
 import '../../Helper_Widget/dialogs.dart';
 import 'option_item.dart';
@@ -201,7 +205,22 @@ class _MessageCardState extends State<MessageCard> {
                       icon: const Icon(Icons.download_rounded,
                           color: Colors.blue, size: 26),
                       name: 'Save Image',
-                      onTap: () async {}),
+                      onTap: () async {
+                        try {
+                          log("Message : ${widget.messages.msg}");
+                          await GallerySaver.saveImage(widget.messages.msg,
+                                  albumName: "Messenger")
+                              .then((bool? success) {
+                            Navigator.pop(context); // hide this bottom bar .
+                            if (success != null && success) {
+                              Dialogs.showSnackbar(
+                                  context, "Save Image Successfully");
+                            }
+                          });
+                        } catch (e) {
+                          log("Error : $e");
+                        }
+                      }),
 
               //!separator or divider
               if (isMe)
@@ -217,7 +236,10 @@ class _MessageCardState extends State<MessageCard> {
                     size: size,
                     icon: const Icon(Icons.edit, color: Colors.blue, size: 26),
                     name: 'Edit Message',
-                    onTap: () {}),
+                    onTap: () {
+                      Navigator.pop(context); // hide this bottom bar .
+                      _showMessageUpdateDialog();
+                    }),
 
               //!delete option
               if (isMe)
@@ -229,7 +251,7 @@ class _MessageCardState extends State<MessageCard> {
                     onTap: () async {
                       // Delete a Message Id .
                       await APIS.deleteMessage(widget.messages).then((value) {
-                        Navigator.pop(context); // hide this bottom bar .})
+                        Navigator.pop(context); // hide this bottom bar .
                       });
                     }),
 
@@ -259,5 +281,66 @@ class _MessageCardState extends State<MessageCard> {
             ],
           );
         });
+  }
+
+  //dialog for updating message content
+  void _showMessageUpdateDialog() {
+    String updatedMsg = widget.messages.msg;
+
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              contentPadding: const EdgeInsets.only(
+                  left: 24, right: 24, top: 20, bottom: 10),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              //title
+              title: const Row(
+                children: [
+                  Icon(
+                    Icons.message,
+                    color: Colors.blue,
+                    size: 28,
+                  ),
+                  Text(' Update Message')
+                ],
+              ),
+
+              //content
+              content: TextFormField(
+                initialValue: updatedMsg,
+                maxLines: null,
+                onChanged: (value) => updatedMsg = value,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15))),
+              ),
+
+              //actions
+              actions: [
+                //cancel button
+                MaterialButton(
+                    onPressed: () {
+                      //hide alert dialog
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(color: Colors.blue, fontSize: 16),
+                    )),
+
+                //update button
+                MaterialButton(
+                    onPressed: () {
+                      //hide alert dialog
+                      Navigator.pop(context);
+                      APIS.updateMessage(widget.messages, updatedMsg);
+                    },
+                    child: const Text(
+                      'Update',
+                      style: TextStyle(color: Colors.blue, fontSize: 16),
+                    ))
+              ],
+            ));
   }
 }

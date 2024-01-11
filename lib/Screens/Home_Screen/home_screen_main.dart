@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:messager/Components/Helper_Widget/dialogs.dart';
 import 'package:messager/Controller/Apis/apis.dart';
 import 'package:messager/Controller/Routes/routes_method.dart';
 import 'package:messager/Export/export_file.dart';
@@ -123,11 +124,12 @@ class _MyWidgetState extends State<HomeScreen> {
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () async {
-                await APIS.auth.signOut().then((value) async {
-                  await GoogleSignIn().signOut();
-                  Navigator.pushReplacementNamed(
-                      context, RouteName.loginScreen);
-                });
+                // await APIS.auth.signOut().then((value) async {
+                //   await GoogleSignIn().signOut();
+                //   Navigator.pushReplacementNamed(
+                //       context, RouteName.loginScreen);
+                // });
+                _addChatUserDialog();
               },
               child: const Icon(Icons.add_comment_rounded),
             ),
@@ -174,5 +176,73 @@ class _MyWidgetState extends State<HomeScreen> {
             )),
       ),
     );
+  }
+
+  //for add chat new user .
+  void _addChatUserDialog() {
+    String email = "";
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              contentPadding: const EdgeInsets.only(
+                  left: 24, right: 24, top: 20, bottom: 10),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              //title
+              title: const Row(
+                children: [
+                  Icon(
+                    Icons.person_2_rounded,
+                    color: Colors.blue,
+                    size: 28,
+                  ),
+                  Text(' Add Message')
+                ],
+              ),
+
+              //content
+              content: TextFormField(
+                maxLines: null,
+                onChanged: (value) => email = value,
+                decoration: InputDecoration(
+                    hintText: "Email Id",
+                    prefixIcon: const Icon(
+                      Icons.person_add,
+                      color: Colors.blue,
+                    ),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15))),
+              ),
+
+              //actions
+              actions: [
+                //cancel button
+                MaterialButton(
+                    onPressed: () {
+                      //hide alert dialog
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(color: Colors.blue, fontSize: 16),
+                    )),
+
+                //Add button
+                MaterialButton(
+                    onPressed: () async {
+                      //hide alert dialog
+                      Navigator.pop(context);
+                      await APIS.addChatUser(email).then((value) {
+                        if (!value) {
+                          Dialogs.showSnackbar(context, "User Do'nt");
+                        }
+                      });
+                    },
+                    child: const Text(
+                      'Add',
+                      style: TextStyle(color: Colors.blue, fontSize: 16),
+                    ))
+              ],
+            ));
   }
 }

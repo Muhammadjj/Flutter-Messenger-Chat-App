@@ -55,9 +55,11 @@ dependencies:
   # !for accessing firebase messaging (Push Notification)
   firebase_messaging: ^14.7.9
   # !For calling Rest Apis .
-  http: ^1.1.2
+  http: ^0.13.6 
   # !flutter_notification_channel using this all device sound and more things allow these notification .
   flutter_notification_channel: ^2.0.0
+  # ! Save Image for Gallery .
+  gallery_saver: ^2.3.0
 
 dev_dependencies:
   flutter_test:
