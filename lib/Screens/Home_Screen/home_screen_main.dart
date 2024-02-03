@@ -124,11 +124,11 @@ class _MyWidgetState extends State<HomeScreen> {
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () async {
-                // await APIS.auth.signOut().then((value) async {
-                //   await GoogleSignIn().signOut();
-                //   Navigator.pushReplacementNamed(
-                //       context, RouteName.loginScreen);
-                // });
+                await APIS.auth.signOut().then((value) async {
+                  await GoogleSignIn().signOut();
+                  Navigator.pushReplacementNamed(
+                      context, RouteName.loginScreen);
+                });
                 _addChatUserDialog();
               },
               child: const Icon(Icons.add_comment_rounded),
